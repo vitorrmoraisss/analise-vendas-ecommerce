@@ -120,6 +120,29 @@ psql -U postgres -h localhost -p 5432 -d analise_vendas -f sql\03_analysis_queri
 - Desenvolver um dashboard.
 - Ampliar as análises de clientes e produtos.
 
+
+## Visualização dos dados
+
+Para complementar as consultas SQL, foi desenvolvido um gráfico de barras horizontais utilizando Python e Matplotlib, permitindo comparar o faturamento das categorias de produtos.
+
+### Faturamento por categoria
+
+![Gráfico de faturamento por categoria](graficos/faturamento_por_categoria.png)
+
+A análise considera apenas pedidos concluídos e calcula o faturamento com base na quantidade vendida, no preço unitário e nos descontos aplicados.
+
+Principais resultados:
+- **Livros:** R$ 6.506.608,25
+- **Eletrônicos:** R$ 6.198.569,15
+- **Moda:** R$ 5.951.628,80
+- **Esporte:** R$ 5.508.636,80
+- **Casa:** R$ 5.191.359,80
+
+Nesse conjunto de dados, Livros apresenta o maior faturamento entre as categorias analisadas.
+
+**Observação:** os dados utilizados neste projeto são sintéticos, gerados para fins de estudo e demonstração técnica. Os resultados não representam vendas reais.
+
+
 ## Autor
 
 **Vitor Morais**
