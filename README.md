@@ -143,6 +143,63 @@ Nesse conjunto de dados, Livros apresenta o maior faturamento entre as categoria
 **Observação:** os dados utilizados neste projeto são sintéticos, gerados para fins de estudo e demonstração técnica. Os resultados não representam vendas reais.
 
 
+
+## Machine Learning: previsão de faturamento
+
+Nesta etapa, o projeto foi ampliado com um experimento de Machine Learning utilizando Python e scikit-learn.
+
+O objetivo foi utilizar o histórico mensal de faturamento extraído do PostgreSQL para treinar um modelo de regressão linear e avaliar sua capacidade de estimar valores futuros.
+
+### Metodologia
+
+1. Extração do faturamento mensal por meio de uma consulta SQL.
+2. Preparação dos dados em ordem cronológica.
+3. Separação dos últimos seis meses para teste, utilizando os meses anteriores para treinamento.
+4. Treinamento de um modelo de regressão linear.
+5. Comparação com um modelo de referência que repete o último faturamento observado no período de treinamento.
+6. Avaliação com MAE, RMSE e erro percentual absoluto médio.
+7. Geração de previsões exploratórias para os três meses seguintes ao histórico disponível.
+
+### Resultados da avaliação
+
+A avaliação foi realizada nos seis meses reservados para teste.
+
+| Métrica | Regressão linear | Modelo de referência |
+|---|---:|---:|
+| MAE | R$ 26.926,60 | R$ 51.038,20 |
+| RMSE | R$ 35.363,56 | R$ 58.142,91 |
+
+O erro percentual absoluto médio da regressão linear foi de 2,14%. O MAE foi aproximadamente 47,24% menor que o da referência nesse período de teste.
+
+Esses resultados indicam que a regressão linear superou a referência na avaliação realizada. Entretanto, não garantem o mesmo desempenho em outros períodos ou em dados reais.
+
+### Previsões exploratórias
+
+| Mês | Faturamento previsto |
+|---|---:|
+| Janeiro de 2027 | R$ 1.234.894,47 |
+| Fevereiro de 2027 | R$ 1.235.830,02 |
+| Março de 2027 | R$ 1.236.765,57 |
+
+As estimativas foram geradas a partir de uma regressão linear baseada no índice temporal. Elas são experimentais e não consideram explicitamente sazonalidade, campanhas comerciais ou outras variáveis que possam influenciar as vendas.
+
+### Arquivos gerados
+
+- `machine_learning/previsao_faturamento.py`: script de extração, treinamento, avaliação e previsão.
+- `machine_learning/resultados_avaliacao.csv`: resultados do teste, incluindo valores reais, previsões e erros.
+- `machine_learning/previsao_faturamento.png`: gráfico do histórico, das previsões de teste e das estimativas futuras.
+
+### Limitações
+
+Os dados são sintéticos e abrangem 24 meses. Por isso, o experimento tem finalidade educacional e não representa uma solução de previsão validada para operações comerciais reais.
+
+Como evolução futura, podem ser avaliados modelos adicionais, validação temporal com múltiplas janelas e variáveis explicativas, sempre comparando os resultados com referências simples.
+
+**Tecnologias:** PostgreSQL, SQL, Python, pandas, scikit-learn, Matplotlib e Git.
+
+
+
+
 ## Autor
 
 **Vitor Morais**
