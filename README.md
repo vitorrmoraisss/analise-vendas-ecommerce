@@ -183,6 +183,40 @@ Esses resultados indicam que a regressão linear superou a referência na avalia
 
 As estimativas foram geradas a partir de uma regressão linear baseada no índice temporal. Elas são experimentais e não consideram explicitamente sazonalidade, campanhas comerciais ou outras variáveis que possam influenciar as vendas.
 
+## Comparação de modelos preditivos
+
+Além da Regressão Linear, o projeto utiliza o método **Holt**, uma técnica de suavização exponencial indicada para séries temporais com tendência.
+
+Os modelos foram avaliados utilizando dados mensais de faturamento. Os primeiros 18 meses foram usados para treinamento e os últimos 6 meses para teste. Como referência, também foi avaliado um modelo simples que repete o último valor observado no treinamento.
+
+### Resultados da avaliação
+
+| Modelo | MAE | RMSE | MAPE |
+|---|---:|---:|---:|
+| Holt | R$ 24.873,43 | R$ 32.217,23 | 1,98% |
+| Regressão Linear | R$ 26.926,60 | R$ 35.363,56 | 2,14% |
+| Referência | R$ 51.038,20 | R$ 58.142,91 | 4,07% |
+
+- **MAE:** erro absoluto médio das previsões.
+- **RMSE:** raiz do erro quadrático médio, que penaliza mais os erros maiores.
+- **MAPE:** erro percentual absoluto médio.
+
+### Visualização da comparação
+
+![Comparação dos modelos preditivos](machine_learning/comparacao_modelos.png)
+
+### Conclusão
+
+Neste experimento, o modelo Holt apresentou os menores erros entre os três métodos avaliados, superando a Regressão Linear e a referência simples no período de teste.
+
+Os resultados são exploratórios: a base contém 24 meses de dados sintéticos, dos quais apenas 6 foram usados para teste. Portanto, o desempenho observado não garante resultados equivalentes em dados reais.
+
+### Arquivos gerados
+
+- `machine_learning/comparacao_modelos.py` — código da comparação.
+- `machine_learning/comparacao_resultados.csv` — métricas dos modelos.
+- `machine_learning/comparacao_modelos.png` — gráfico comparativo.
+
 ### Arquivos gerados
 
 - `machine_learning/previsao_faturamento.py`: script de extração, treinamento, avaliação e previsão.
