@@ -250,44 +250,91 @@ def avaliar_modelo(df):
 # GERACAO DO GRAFICO
 # ============================================================
 
+
 def gerar_grafico(df, resultados, futuro):
-    arquivo_saida = (
-        PASTA_SAIDA / "previsao_faturamento.png"
-    )
+    from matplotlib.ticker import FuncFormatter
 
-    plt.figure(figsize=(12, 6))
+    arquivo_saida = PASTA_SAIDA / "previsao_faturamento.png"
 
-    plt.plot(
+    fig, ax = plt.subplots(figsize=(12, 6))
+
+    # Faturamento historico completo
+    ax.plot(
         df["mes"],
         df["faturamento"],
         marker="o",
-        label="Faturamento historico"
+        linewidth=1.5,
+        label="Faturamento historico",
+        zorder=3
     )
 
-    plt.plot(
+    # Periodo reservado para teste
+    inicio_teste = resultados["mes"].min()
+    fim_teste = resultados["mes"].max()
+    fim_faixa = fim_teste + pd.offsets.MonthBegin(1)
+
+    ax.axvspan(
+        inicio_teste,
+        fim_faixa,
+        color="gray",
+        alpha=0.15,
+        label="Periodo de teste",
+        zorder=1
+    )
+
+    # Valores reais apenas no periodo de teste
+    ax.plot(
+        resultados["mes"],
+        resultados["real"],
+        marker="o",
+        linestyle="-",
+        linewidth=2,
+        color="black",
+        label="Faturamento real (teste)",
+        zorder=5
+    )
+
+    # Previsoes da regressao linear no periodo de teste
+    ax.plot(
         resultados["mes"],
         resultados["regressao_linear"],
         marker="s",
         linestyle="--",
-        label="Regressao linear (teste)"
+        linewidth=2,
+        color="tab:orange",
+        label="Regressao Linear (teste)",
+        zorder=4
     )
-
-    plt.plot(
+    # Previsao futura usando o modelo retreinado com todo o historico
+    ax.plot(
         futuro["mes"],
         futuro["faturamento_previsto"],
         marker="^",
         linestyle=":",
-        label="Previsao exploratoria"
+        linewidth=2,
+        color="tab:green",
+        label="Previsao futura (modelo retreinado)",
+        zorder=4
     )
 
-    plt.title("Faturamento mensal: historico e previsao")
-    plt.xlabel("Mes")
-    plt.ylabel("Faturamento (R$)")
-    plt.grid(axis="y", linestyle="--", alpha=0.3)
-    plt.legend()
-    plt.tight_layout()
+    # Formatar o eixo Y em milhoes de reais
+    ax.yaxis.set_major_formatter(
+        FuncFormatter(
+            lambda valor, pos: (
+                f"R$ {valor / 1_000_000:.2f} mi"
+            ).replace(".", ",")
+        )
+    )
 
-    plt.savefig(
+    ax.set_title("Faturamento mensal: historico e previsao")
+    ax.set_xlabel("Mes")
+    ax.set_ylabel("Faturamento")
+    ax.grid(axis="y", linestyle="--", alpha=0.3)
+    ax.legend(loc="best")
+
+    fig.tight_layout()
+
+    fig.savefig(
         arquivo_saida,
         dpi=200,
         bbox_inches="tight"
@@ -296,6 +343,7 @@ def gerar_grafico(df, resultados, futuro):
     print(f"\nGrafico salvo em: {arquivo_saida}")
 
     plt.show()
+
 
 
 # ============================================================
